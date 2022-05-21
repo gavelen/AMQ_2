@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.jms.Queue;
+import java.util.Base64;
 
 @RestController
 @RequiredArgsConstructor
@@ -30,7 +31,8 @@ public class Producer {
             log.info(emptyMessage.getText());
             return emptyMessage;
         }
-        jmsTemplate.convertAndSend(queue, message.getText());
+        String message64 = new String(Base64.getDecoder().decode(message.getText()));
+        jmsTemplate.convertAndSend(queue, message64);
         return message;
     }
 
